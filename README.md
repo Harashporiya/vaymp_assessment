@@ -1,51 +1,154 @@
-# Welcome to your Expo app 👋
+# 🛍️ Shop — React Native E-Commerce App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern, feature-rich mobile shopping application built with **React Native**, **Expo SDK 54**, and **Redux Toolkit**. Includes product listing with filter/sort, a shopping bag with persistent state, and a clean premium UI.
 
-## Get started
+---
 
-1. Install dependencies
+## 📱 Screenshots
 
-   ```bash
-   npm install
-   ```
+| Product Listing | Shopping Bag |
+|---|---|
+| Browse products with filter & sort | Add/remove items, view total |
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## ✨ Features
 
-In the output, you'll find options to open the app in a
+- 🛒 **Product Listing** — Browse products with search, filter by category/price/rating, and sort options
+- 🛍️ **Shopping Bag** — Add, remove, and update quantities with real-time total calculation
+- 💾 **Persistent Cart** — Shopping bag state saved with `redux-persist` + `AsyncStorage`
+- 🎨 **Premium UI** — Custom color palette (`#4342ff`), smooth animations, and clean typography
+- 📦 **EAS Build Ready** — Configured for internal APK distribution via Expo Application Services
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🗂️ Project Structure
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+shop/
+├── src/
+│   ├── app/
+│   │   ├── _layout.tsx          # Root layout with Redux Provider
+│   │   ├── index.tsx            # Product listing screen
+│   │   └── bag.tsx              # Shopping bag screen
+│   ├── components/
+│   │   ├── ProductCard.tsx      # Individual product display card
+│   │   ├── FilterModal.tsx      # Filter by category, price, rating
+│   │   └── SortModal.tsx        # Sort products modal
+│   ├── store/
+│   │   ├── index.ts             # Redux store with redux-persist config
+│   │   ├── bagSlice.ts          # Shopping bag slice (add/remove/update)
+│   │   └── hooks.ts             # Typed useAppDispatch & useAppSelector
+│   └── global.css               # Global CSS variables and fonts
+├── assets/
+│   └── images/                  # App icons, splash screen, tab icons
+├── android/                     # Native Android project files
+├── app.json                     # Expo app configuration
+├── eas.json                     # EAS Build profiles
+└── package.json
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 🚀 Getting Started
 
-To learn more about developing your project with Expo, look at the following resources:
+### Prerequisites
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- Node.js `>= 18`
+- npm or yarn
+- Expo CLI: `npm install -g expo-cli`
+- EAS CLI (for builds): `npm install -g eas-cli`
 
-## Join the community
+### Installation
 
-Join our community of developers creating universal apps.
+```bash
+# Clone the repository
+git clone https://github.com/Harashporiya/vaymp_assessment.git
+cd vaymp_assessment/shop
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-# vaymp_assessment
+# Install dependencies
+npm install
+```
+
+### Run Locally
+
+```bash
+# Start Expo development server
+npx expo start
+
+# Run on Android emulator
+npx expo run:android
+
+# Run on iOS simulator
+npx expo run:ios
+```
+
+---
+
+## 📦 Build APK (via EAS)
+
+```bash
+# Login to Expo account
+eas login
+
+# Build internal preview APK for Android
+eas build -p android --profile preview
+```
+
+> The APK will be available for download from the [Expo dashboard](https://expo.dev).
+
+---
+
+## 🧰 Tech Stack
+
+| Technology | Version | Purpose |
+|---|---|---|
+| React Native | 0.81.5 | Core mobile framework |
+| Expo SDK | ~54.0.34 | Development platform |
+| Expo Router | ~6.0.23 | File-based navigation |
+| Redux Toolkit | ^2.12.0 | State management |
+| Redux Persist | ^6.0.0 | Cart persistence |
+| AsyncStorage | 2.2.0 | Local data storage |
+| React Native Reanimated | ~4.1.1 | Smooth animations |
+| TypeScript | ~5.9.2 | Type safety |
+
+---
+
+## 🔧 EAS Build Profiles
+
+Defined in `eas.json`:
+
+| Profile | Platform | Output | Use Case |
+|---|---|---|---|
+| `development` | Android/iOS | Dev client | Local development |
+| `preview` | Android | `.apk` | Internal testing |
+| `production` | Android/iOS | `.aab` | Play Store / App Store |
+
+---
+
+## 📋 Available Scripts
+
+```bash
+npm start          # Start Expo development server
+npm run android    # Run on Android
+npm run ios        # Run on iOS
+npm run web        # Run on Web
+npm run lint       # Run ESLint
+```
+
+---
+
+## 🏗️ State Management
+
+The app uses **Redux Toolkit** with **Redux Persist**:
+
+- `bagSlice` — manages cart items (add, remove, increment/decrement quantity)
+- Persisted to `AsyncStorage` so the cart survives app restarts
+- Typed hooks (`useAppDispatch`, `useAppSelector`) for type-safe usage
+
+---
+
+## 👤 Author
+
+**Harash Poriya**  
+GitHub: [@Harashporiya](https://github.com/Harashporiya)
