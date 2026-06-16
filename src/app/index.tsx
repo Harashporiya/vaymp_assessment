@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   View, Text, FlatList, StyleSheet, TouchableOpacity,
-  TextInput, ActivityIndicator, StatusBar, Pressable,
+  TextInput, ActivityIndicator, StatusBar, Pressable, Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -89,14 +89,17 @@ export default function ProductsScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
 
-      
+
       <View style={styles.header}>
         <Pressable style={styles.backBtn}>
           <Feather name="chevron-left" size={24} color={COLORS.text} />
         </Pressable>
         <View style={styles.headerCenter}>
-          
-          <Feather name="shopping-cart" size={20} color={COLORS.primary} />
+          <Image
+            source={require('../../assets/images/shopping_cart_icon.png')}
+            style={styles.headerLogo}
+            resizeMode="contain"
+          />
           <Text style={styles.headerTitle}>T-shirts</Text>
         </View>
         <View style={styles.headerRight}>
@@ -107,8 +110,8 @@ export default function ProductsScreen() {
             <Feather name="heart" size={20} color={COLORS.text} />
           </Pressable>
 
-          <Pressable style={styles.headerBtn} onPress={() => router.push('/bag' as any)}>
-            <Feather name="shopping-bag" size={20} color={COLORS.text} />
+          <Pressable style={[styles.headerBtn, { marginLeft: 4 }]} onPress={() => router.push('/bag' as any)}>
+            <Feather name="shopping-bag" size={22} color={COLORS.text} />
             {bagCount > 0 && (
               <View style={styles.badge}><Text style={styles.badgeText}>{bagCount}</Text></View>
             )}
@@ -116,7 +119,7 @@ export default function ProductsScreen() {
         </View>
       </View>
 
-      
+
       <View style={styles.subtitleRow}>
         <Text style={styles.subtitleText}>
           {'Showing '}
@@ -136,7 +139,7 @@ export default function ProductsScreen() {
         </Text>
       </View>
 
-      
+
       {loading ? (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color={COLORS.primary} />
@@ -164,22 +167,34 @@ export default function ProductsScreen() {
         />
       )}
 
-      
+
       <View style={styles.floatingBar} pointerEvents="box-none">
-        <TouchableOpacity style={styles.floatingBtn} onPress={() => setSortVisible(true)} activeOpacity={0.85}>
-          <Text style={styles.floatingBtnIcon}>↕</Text>
-          <Text style={styles.floatingBtnText}> Sort by</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.floatingBtn, selectedCategory && styles.floatingBtnActive]}
-          onPress={() => setFilterVisible(true)}
-          activeOpacity={0.85}
-        >
-          <Text style={[styles.floatingBtnIcon, selectedCategory && styles.floatingBtnIconActive]}>≡</Text>
-          <Text style={[styles.floatingBtnText, selectedCategory && styles.floatingBtnTextActive]}>
-            {' '}Filters{selectedCategory ? ' •' : ''}
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.floatingPill}>
+          {/* Sort by button */}
+          <TouchableOpacity
+            style={styles.pillBtn}
+            onPress={() => setSortVisible(true)}
+            activeOpacity={0.7}
+          >
+            <Feather name="arrow-up" size={13} color={COLORS.primary} style={{ marginTop: 1 }} />
+            <Feather name="arrow-down" size={13} color={COLORS.primary} style={{ marginTop: -4, marginLeft: -5 }} />
+            <Text style={styles.pillBtnText}>Sort by</Text>
+          </TouchableOpacity>
+
+          {/* Divider */}
+          <View style={styles.pillDivider} />
+
+          {/* Filters button */}
+          <TouchableOpacity
+            style={styles.pillBtn}
+            onPress={() => setFilterVisible(true)}
+            activeOpacity={0.7}
+          >
+            <Feather name="sliders" size={15} color={COLORS.primary} />
+            <Text style={styles.pillBtnText}>Filters</Text>
+            {selectedCategory && <View style={styles.filterDot} />}
+          </TouchableOpacity>
+        </View>
       </View>
 
       <SortModal visible={sortVisible} onClose={() => setSortVisible(false)} selectedSort={selectedSort} onSelectSort={setSelectedSort} />
@@ -218,6 +233,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: SPACING.sm,
   },
+  headerLogo: {
+    width: 48,
+    height: 48,
+    borderRadius: RADIUS.sm,
+  },
   logo: {
     width: 30,
     height: 30,
@@ -245,6 +265,7 @@ const styles = StyleSheet.create({
   headerBtn: {
     position: 'relative',
     padding: SPACING.xs,
+    overflow: 'visible',
   },
   headerBtnIcon: {
     fontSize: 20,
@@ -356,41 +377,49 @@ const styles = StyleSheet.create({
     bottom: 28,
     left: 0,
     right: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: SPACING.md,
+    alignItems: 'center',
     pointerEvents: 'box-none',
   },
-  floatingBtn: {
+  floatingPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.text,
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.sm,
+    backgroundColor: COLORS.surface,
     borderRadius: RADIUS.full,
-    elevation: 6,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    elevation: 8,
     shadowColor: '#000',
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.12,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    overflow: 'hidden',
   },
-  floatingBtnActive: {
+  pillBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingHorizontal: SPACING.xxxl,
+    paddingVertical: SPACING.sm + 2,
+    minWidth: 130,
+  },
+  pillBtnText: {
+    color: COLORS.text,
+    fontSize: FONTS.sizes.md,
+    fontWeight: '600',
+    letterSpacing: 0.1,
+  },
+  pillDivider: {
+    width: 1,
+    height: 22,
+    backgroundColor: COLORS.border,
+  },
+  filterDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
     backgroundColor: COLORS.primary,
-  },
-  floatingBtnIcon: {
-    color: COLORS.white,
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  floatingBtnIconActive: {
-    color: COLORS.white,
-  },
-  floatingBtnText: {
-    color: COLORS.white,
-    fontSize: FONTS.sizes.sm,
-    fontWeight: '700',
-  },
-  floatingBtnTextActive: {
-    color: COLORS.white,
+    marginLeft: 2,
+    marginBottom: 8,
   },
 });
