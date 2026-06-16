@@ -29,30 +29,26 @@ const SortModal: React.FC<Props> = ({ visible, onClose, selectedSort, onSelectSo
       <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={onClose}>
         <TouchableOpacity activeOpacity={1} onPress={() => {}}>
           <View style={styles.sheet}>
-            
+            {/* Handle */}
+            <View style={styles.handle} />
+
             <Text style={styles.title}>Sort by</Text>
 
-            
-            {SORT_OPTIONS.map((option, index) => {
+            {SORT_OPTIONS.map((option) => {
               const isSelected = selectedSort === option.id;
               return (
                 <TouchableOpacity
                   key={option.id}
-                  style={[
-                    styles.optionRow,
-                    index === SORT_OPTIONS.length - 1 && styles.optionRowLast,
-                  ]}
+                  style={styles.optionRow}
                   onPress={() => {
                     onSelectSort(option.id);
                     onClose();
                   }}
-                  activeOpacity={0.7}
+                  activeOpacity={0.6}
                 >
-                  <View style={[styles.optionInner, isSelected && styles.optionInnerSelected]}>
-                    <Text style={[styles.optionText, isSelected && styles.optionTextSelected]}>
-                      {option.label}
-                    </Text>
-                  </View>
+                  <Text style={[styles.optionText, isSelected && styles.optionTextSelected]}>
+                    {option.label}
+                  </Text>
                 </TouchableOpacity>
               );
             })}
@@ -66,16 +62,24 @@ const SortModal: React.FC<Props> = ({ visible, onClose, selectedSort, onSelectSo
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: COLORS.overlay,
+    backgroundColor: 'rgba(0,0,0,0.35)',
     justifyContent: 'flex-end',
   },
   sheet: {
     backgroundColor: COLORS.surface,
     borderTopLeftRadius: RADIUS.xl,
     borderTopRightRadius: RADIUS.xl,
-    paddingTop: SPACING.xl,
-    paddingHorizontal: SPACING.lg,
+    paddingTop: SPACING.md,
     paddingBottom: SPACING.xxxl,
+    paddingHorizontal: SPACING.lg,
+  },
+  handle: {
+    width: 40,
+    height: 4,
+    backgroundColor: COLORS.border,
+    borderRadius: RADIUS.full,
+    alignSelf: 'center',
+    marginBottom: SPACING.lg,
   },
   title: {
     color: COLORS.primary,
@@ -84,32 +88,16 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   optionRow: {
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
-  },
-  optionRowLast: {
-    borderBottomWidth: 0,
-  },
-  optionInner: {
     paddingVertical: SPACING.md,
-    paddingHorizontal: SPACING.xs,
-    borderRadius: RADIUS.xs,
-  },
-  optionInnerSelected: {
-    borderWidth: 1.5,
-    borderColor: COLORS.success,
-    paddingHorizontal: SPACING.sm,
-    marginVertical: 3,
-    borderRadius: RADIUS.xs,
   },
   optionText: {
     color: COLORS.text,
-    fontSize: FONTS.sizes.md,
+    fontSize: FONTS.sizes.lg,
     fontWeight: '400',
   },
   optionTextSelected: {
-    color: COLORS.text,
-    fontWeight: '500',
+    color: COLORS.primary,
+    fontWeight: '600',
   },
 });
 
